@@ -12,7 +12,7 @@ ChatApp allows users to securely authenticate, search for other users, start con
 
 **Frontend:** `Coming Soon`
 
-**Backend API:** `Coming Soon`
+**Backend API:** `https://chatapp-real-time-chat-application-f1bf.onrender.com/`
 
 ---
 
