@@ -449,3 +449,121 @@ body {
   color: #6c757d;
   font-size: 11px;
 }
+/* ----------------------------------------- */
+
+/* =========================================
+   Message Input
+========================================= */
+
+.message-input {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  background: #ffffff;
+  border-top: 1px solid #e5e7eb;
+}
+
+/* =========================================
+   Emoji Button
+========================================= */
+
+.emoji-picker-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.emoji-button {
+  width: 40px;
+  height: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+  background: transparent;
+
+  font-size: 22px;
+  color: #6b7280;
+
+  cursor: pointer;
+  border-radius: 50%;
+
+  transition: background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.emoji-button:hover {
+  background: #f3f4f6;
+  color: #0d6efd;
+}
+
+.emoji-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* =========================================
+   Emoji Picker Position
+========================================= */
+
+.emoji-picker-container {
+  position: absolute;
+
+  bottom: 52px;
+  left: 0;
+
+  z-index: 1000;
+
+  box-shadow: 0 8px 30px
+    rgba(0, 0, 0, 0.15);
+
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+/* =========================================
+   Message Text Input
+========================================= */
+
+.message-input input {
+  flex: 1;
+
+  min-width: 0;
+
+  height: 42px;
+
+  padding: 0 14px;
+
+  border: 1px solid #d1d5db;
+  border-radius: 21px;
+
+  outline: none;
+
+  font-size: 15px;
+}
+
+.message-input input:focus {
+  border-color: #0d6efd;
+
+  box-shadow: 0 0 0 2px
+    rgba(13, 110, 253, 0.1);
+}
+
+/* =========================================
+   Send Button
+========================================= */
+
+.message-input .btn {
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+}
