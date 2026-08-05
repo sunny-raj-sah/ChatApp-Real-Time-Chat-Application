@@ -10,7 +10,7 @@ ChatApp allows users to securely authenticate, search for other users, start con
 
 > Add your deployed frontend URL here after deployment.
 
-**Frontend:** `Coming Soon`
+**Frontend:** `https://chat-app-real-time-chat-application-woad.vercel.app/login`
 
 **Backend API:** `https://chatapp-real-time-chat-application-f1bf.onrender.com/`
 
@@ -909,3 +909,5 @@ https://github.com/sunny-raj-sah
 If you find this project useful, consider giving it a ⭐ on GitHub.
 
 ---
+
+
