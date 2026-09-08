@@ -3,10 +3,14 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { subscribeToSocket } from "../services/socket";
 
 import api from "../services/api";
+import { useAuth } from "./AuthContext";
+
 
 const ChatContext = createContext(null);
 
 export const ChatProvider = ({ children }) => {
+    const { user, loading: authLoading } = useAuth();
+
   const [users, setUsers] = useState([]);
   const [conversations, setConversations] = useState([]);
 
@@ -19,6 +23,8 @@ export const ChatProvider = ({ children }) => {
   const [loadingConversations, setLoadingConversations] = useState(false);
 
   const [loadingMessages, setLoadingMessages] = useState(false);
+
+   
 
   // --------------------------------
   // Real-time socket message handling
@@ -520,10 +526,32 @@ const createConversation = async (userId) => {
   // Initial data
   // --------------------------------
 
-  useEffect(() => {
-    fetchConversations();
-    fetchUsers();
-  }, []);
+  // useEffect(() => {
+  //   fetchConversations();
+  //   fetchUsers();
+  // }, []);
+
+  // --------------------------------
+// Initial data
+// --------------------------------
+
+useEffect(() => {
+  if (authLoading) {
+    return;
+  }
+
+  if (!user) {
+    setUsers([]);
+    setConversations([]);
+    setActiveConversation(null);
+    setMessages([]);
+
+    return;
+  }
+
+  fetchUsers();
+  fetchConversations();
+}, [user, authLoading]);
 
   // --------------------------------
   // Start typing

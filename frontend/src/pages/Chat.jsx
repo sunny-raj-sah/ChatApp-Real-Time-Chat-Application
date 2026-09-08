@@ -29,18 +29,18 @@ const Chat = () => {
     messages,
     loadingMessages,
     selectConversation,
-    fetchConversations,
+    // fetchConversations,
     sendMessage,
     startTyping,
     stopTyping,
     deleteMessage,
   } = useChat();
 
-  useEffect(() => {
-    fetchConversations();
+  // useEffect(() => {
+  //   fetchConversations();
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   // Join active conversation
   useEffect(() => {
