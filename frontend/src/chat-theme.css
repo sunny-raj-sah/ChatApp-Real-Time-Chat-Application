@@ -1,0 +1,463 @@
+ /* ============================================================
+   Wisp — chat theme
+   Import this once, near the top of your app (e.g. in main.jsx
+   or App.jsx, after the Bootstrap stylesheet):
+
+     import "./chat-theme.css";
+
+   It re-points Bootstrap's own CSS variables to a new palette
+   (so bg-primary, text-primary, btn-primary, etc. all just work)
+   and adds a small set of extra classes used by the chat
+   components (avatar rings, status dot, bubbles, scrollbars...).
+   ============================================================ */
+
+@import url("https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap");
+
+:root {
+  /* ---- Wisp palette ---- */
+  --cw-bg: #f7f5f1;
+  --cw-surface: #ffffff;
+  --cw-surface-alt: #f1efea;
+  --cw-ink: #1e2321;
+  --cw-ink-soft: #5b615e;
+  --cw-border: #e7e3dc;
+
+  --cw-primary: #0e6b5c;
+  --cw-primary-dark: #0a4f45;
+  --cw-primary-darker: #073b34;
+  --cw-primary-soft: #e3f1ed;
+  --cw-primary-rgb: 14, 107, 92;
+
+  --cw-accent: #e8a23a;
+  --cw-accent-soft: #fbedd3;
+  --cw-danger: #d1483f;
+
+  --cw-radius-lg: 20px;
+  --cw-radius-md: 14px;
+  --cw-radius-sm: 10px;
+  --cw-shadow-sm: 0 1px 2px rgba(30, 35, 33, 0.06);
+  --cw-shadow-md: 0 8px 24px -8px rgba(14, 107, 92, 0.18);
+
+  /* ---- Point Bootstrap at the same palette ---- */
+  --bs-primary: var(--cw-primary);
+  --bs-primary-rgb: var(--cw-primary-rgb);
+  --bs-body-bg: var(--cw-bg);
+  --bs-body-color: var(--cw-ink);
+  --bs-border-color: var(--cw-border);
+  --bs-link-color: var(--cw-primary);
+  --bs-link-hover-color: var(--cw-primary-dark);
+  --bs-body-font-family: "Inter", system-ui, sans-serif;
+}
+
+body {
+  background: var(--cw-bg);
+  color: var(--cw-ink);
+  font-family: "Inter", system-ui, sans-serif;
+}
+
+/* Headings / brand text use the display face */
+.cw-display {
+  font-family: "Sora", "Inter", system-ui, sans-serif;
+}
+
+/* ---- Bootstrap component overrides that don't auto-inherit
+   the CSS var (their hover/active states are pre-baked) ---- */
+.btn-primary {
+  --bs-btn-bg: var(--cw-primary);
+  --bs-btn-border-color: var(--cw-primary);
+  --bs-btn-hover-bg: var(--cw-primary-dark);
+  --bs-btn-hover-border-color: var(--cw-primary-dark);
+  --bs-btn-active-bg: var(--cw-primary-darker);
+  --bs-btn-active-border-color: var(--cw-primary-darker);
+  --bs-btn-disabled-bg: #a9c4bd;
+  --bs-btn-disabled-border-color: #a9c4bd;
+  --bs-btn-focus-shadow-rgb: var(--cw-primary-rgb);
+}
+
+.form-control:focus {
+  border-color: var(--cw-primary);
+  box-shadow: 0 0 0 0.2rem rgba(var(--cw-primary-rgb), 0.15);
+}
+
+::selection {
+  background: var(--cw-primary-soft);
+  color: var(--cw-primary-darker);
+}
+
+/* Visible keyboard focus everywhere, without a11y regressions */
+.cw-focusable:focus-visible {
+  outline: 2px solid var(--cw-primary);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* ============================================================
+   Layout shell
+   ============================================================ */
+
+.cw-shell {
+  background: var(--cw-bg);
+}
+
+.cw-sidebar {
+  background: var(--cw-surface);
+}
+
+.cw-sidebar-top {
+  border-bottom: 1px solid var(--cw-border);
+}
+
+/* Always-visible top bar: brand + current user + logout.
+   Deliberately outside the mobile list/chat toggle so logout
+   is never hidden behind an open conversation. */
+.cw-topbar {
+  background: var(--cw-surface);
+  border-bottom: 1px solid var(--cw-border);
+  flex-shrink: 0;
+}
+
+.cw-brand-mark {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: linear-gradient(155deg, var(--cw-primary), var(--cw-primary-dark));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.cw-brand-word {
+  font-family: "Sora", sans-serif;
+  font-weight: 700;
+  font-size: 1.15rem;
+  letter-spacing: -0.01em;
+  color: var(--cw-ink);
+}
+
+.cw-brand-word::after {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-left: 5px;
+  border-radius: 50%;
+  background: var(--cw-accent);
+  vertical-align: middle;
+}
+
+/* Thin, quiet scrollbars for the two scrolling panes */
+.cw-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--cw-border) transparent;
+}
+.cw-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+.cw-scroll::-webkit-scrollbar-thumb {
+  background: var(--cw-border);
+  border-radius: 8px;
+}
+.cw-scroll::-webkit-scrollbar-thumb:hover {
+  background: #cfc9bd;
+}
+
+/* ============================================================
+   Avatars + presence
+   ============================================================ */
+
+.cw-avatar {
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-family: "Sora", sans-serif;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(155deg, var(--cw-primary), var(--cw-primary-dark));
+  position: relative;
+}
+
+.cw-avatar-ring {
+  box-shadow: 0 0 0 2px var(--cw-surface), 0 0 0 4px var(--cw-primary-soft);
+}
+
+.cw-avatar-ring.is-online {
+  box-shadow: 0 0 0 2px var(--cw-surface), 0 0 0 4px rgba(var(--cw-primary-rgb), 0.45);
+}
+
+.cw-status-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #b9bcb9;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.cw-status-dot.is-online {
+  background: var(--cw-primary);
+}
+
+.cw-status-dot.is-online::after {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 1.5px solid var(--cw-primary);
+  opacity: 0.55;
+  animation: cw-pulse 2.2s ease-out infinite;
+}
+
+@keyframes cw-pulse {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.55;
+  }
+  100% {
+    transform: scale(1.7);
+    opacity: 0;
+  }
+}
+
+/* ============================================================
+   Conversation list
+   ============================================================ */
+
+.cw-conv-item {
+  border-left: 3px solid transparent;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.cw-conv-item:hover {
+  background: var(--cw-surface-alt) !important;
+}
+
+.cw-conv-item.is-active {
+  background: var(--cw-primary-soft) !important;
+  border-left-color: var(--cw-primary);
+}
+
+.cw-typing-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--cw-accent);
+  font-weight: 600;
+}
+
+.cw-typing-dots {
+  display: inline-flex;
+  gap: 2px;
+}
+.cw-typing-dots span {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--cw-accent);
+  animation: cw-bounce 1s infinite ease-in-out;
+}
+.cw-typing-dots span:nth-child(2) {
+  animation-delay: 0.15s;
+}
+.cw-typing-dots span:nth-child(3) {
+  animation-delay: 0.3s;
+}
+@keyframes cw-bounce {
+  0%,
+  60%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.5;
+  }
+  30% {
+    transform: translateY(-3px);
+    opacity: 1;
+  }
+}
+
+/* ============================================================
+   Search box
+   ============================================================ */
+
+.cw-search-box {
+  position: relative;
+}
+.cw-search-box .bi-search {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--cw-ink-soft);
+  font-size: 0.85rem;
+  pointer-events: none;
+}
+.cw-search-box input {
+  padding-left: 34px;
+  background: var(--cw-surface-alt);
+  border: 1px solid transparent;
+}
+.cw-search-box input:focus {
+  background: var(--cw-surface);
+}
+
+.cw-search-result {
+  border-bottom: 1px solid var(--cw-border);
+  transition: background-color 0.15s ease;
+}
+.cw-search-result:hover {
+  background: var(--cw-surface-alt);
+}
+.cw-search-result:last-child {
+  border-bottom: none;
+}
+
+/* ============================================================
+   Chat header
+   ============================================================ */
+
+.cw-header {
+  background: var(--cw-surface);
+  border-bottom: 1px solid var(--cw-border);
+}
+
+.cw-back-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--cw-border);
+  background: var(--cw-surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--cw-ink);
+  flex-shrink: 0;
+}
+.cw-back-btn:hover {
+  background: var(--cw-surface-alt);
+}
+
+/* ============================================================
+   Messages
+   ============================================================ */
+
+.cw-message-pane {
+  background: var(--cw-surface-alt);
+  background-image: radial-gradient(var(--cw-border) 0.6px, transparent 0.6px);
+  background-size: 18px 18px;
+}
+
+.cw-bubble {
+  position: relative;
+  border-radius: var(--cw-radius-md);
+  box-shadow: var(--cw-shadow-sm);
+}
+
+.cw-bubble.is-own {
+  background: var(--cw-primary);
+  color: #fff;
+  border-bottom-right-radius: 4px;
+}
+
+.cw-bubble.is-other {
+  background: var(--cw-surface);
+  color: var(--cw-ink);
+  border: 1px solid var(--cw-border);
+  border-bottom-left-radius: 4px;
+}
+
+.cw-bubble-delete {
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+.cw-bubble:hover .cw-bubble-delete {
+  opacity: 0.85;
+}
+.cw-bubble-delete:hover {
+  opacity: 1 !important;
+  color: #ffd6d2 !important;
+}
+
+/* ============================================================
+   Message input
+   ============================================================ */
+
+.cw-input-bar {
+  background: var(--cw-surface);
+  border-top: 1px solid var(--cw-border);
+}
+
+.cw-icon-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid var(--cw-border);
+  background: var(--cw-surface);
+  color: var(--cw-ink-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+.cw-icon-btn:hover:not(:disabled) {
+  background: var(--cw-surface-alt);
+  color: var(--cw-primary);
+}
+
+.cw-send-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: none;
+  background: var(--cw-primary);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.12s ease, background-color 0.15s ease;
+  flex-shrink: 0;
+}
+.cw-send-btn:hover:not(:disabled) {
+  background: var(--cw-primary-dark);
+  transform: scale(1.06);
+}
+.cw-send-btn:disabled {
+  background: #cfd8d5;
+}
+
+.cw-text-input {
+  border: 1px solid var(--cw-border);
+  background: var(--cw-surface-alt);
+}
+.cw-text-input:focus {
+  background: var(--cw-surface);
+}
+
+/* ============================================================
+   Empty states
+   ============================================================ */
+
+.cw-empty-badge {
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  background: var(--cw-primary-soft);
+  color: var(--cw-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .cw-status-dot.is-online::after,
+  .cw-typing-dots span,
+  .cw-send-btn {
+    animation: none !important;
+    transition: none !important;
+  }
+}
