@@ -1,633 +1,142 @@
 # 💬 ChatApp — Real-Time Chat Application
 
-A full-stack real-time chat application built with the **MERN stack** and **Socket.IO**.
+A full-stack one-to-one real-time messaging application built with **React, Node.js, Express.js, MongoDB, and Socket.IO**.
 
-ChatApp allows users to securely authenticate, search for other users, start conversations, exchange messages in real time, see online/offline status, view typing indicators, track message delivery/read status, and delete their own messages.
-
----
+ChatApp supports JWT authentication, user search, conversations, real-time messaging, online/offline presence, typing indicators, message status fields, paginated message history, and ownership-controlled message deletion.
 
 ## 🚀 Live Demo
 
-> Add your deployed frontend URL here after deployment.
+**Frontend:** https://chat-app-real-time-chat-application-woad.vercel.app/login
 
-**Frontend:** `https://chat-app-real-time-chat-application-woad.vercel.app/login`
+**Backend:** https://chatapp-real-time-chat-application-f1bf.onrender.com/
 
-**Backend API:** `https://chatapp-real-time-chat-application-f1bf.onrender.com/`
+## ✨ Features
 
----
+- 🔐 User registration and JWT-based login
+- 🔎 Search users by name or email
+- 💬 One-to-one conversations
+- ⚡ Real-time messaging with Socket.IO
+- 🟢 Online/offline presence and last seen
+- ✍️ Real-time typing indicators
+- ✓ Sent / delivered / read message status model
+- 🗑️ Delete your own messages with server-side ownership validation
+- 📋 Conversation previews and automatic reordering
+- 📜 Paginated message history
+- 📱 Responsive chat interface
+- 😀 Emoji picker support
 
-# 📸 Features
+## 🛠️ Tech Stack
 
-## 🔐 Authentication
+| Layer | Technologies |
+|---|---|
+| Frontend | React 19, React Router, Context API, Axios, Socket.IO Client |
+| UI | Bootstrap 5, Bootstrap Icons, Emoji Picker React |
+| Backend | Node.js, Express 5 |
+| Database | MongoDB, Mongoose |
+| Real-time | Socket.IO |
+| Authentication | JWT, bcryptjs |
+| Configuration | dotenv |
+| Deployment | Vercel, Render |
 
-- User registration
-- User login
-- JWT-based authentication
-- Protected API routes
-- Persistent login using `localStorage`
-- Secure logout
-
-## 💬 Real-Time Messaging
-
-- Send messages instantly using Socket.IO
-- Messages appear without refreshing the page
-- Real-time message delivery
-- Conversation-based Socket.IO rooms
-- Sender and receiver synchronization
-
-## 👤 User Management
-
-- Search users by name or email
-- Start a conversation with another user
-- Display user name and email
-- Display user profile avatar
-- Real-time online/offline presence
-- Last seen information
-
-## ✍️ Typing Indicator
-
-- Real-time `Typing...` indicator
-- Typing status appears in the conversation list
-- Typing events are handled through Socket.IO
-- Automatically stops typing status when typing ends
-
-## ✓ Message Status
-
-Messages support:
-
-- `Sent` ✓
-- `Delivered` ✓✓
-- `Read` ✓✓
-
-## 🗑️ Message Management
-
-- Delete your own messages
-- Delete messages from MongoDB
-- Real-time message deletion for both users
-- Deleted messages disappear without refreshing
-- Conversation preview updates after message deletion
-
-## 📋 Conversation Sidebar
-
-- List all conversations
-- Show conversation participant
-- Show latest message
-- Show latest message time
-- Automatically update conversation order
-- Real-time conversation preview updates
-- Display `Typing...` instead of the latest message when the user is typing
-
-## 🟢 Online Presence
-
-- Real-time online status
-- Real-time offline status
-- Last seen tracking
-- Presence updates without page refresh
-- Online/offline status synchronized between users
-
-## 📧 Chat Header
-
-- Display conversation participant's name
-- Display participant's email
-- Display online/offline status
-- Display user avatar
-
-## 🔎 User Search
-
-- Search users from the sidebar
-- Search by name or email
-- Real-time search results
-- Start a conversation directly from search results
-- Automatically open the selected conversation
-
-## ⚡ Real-Time Synchronization
-
-- Real-time message synchronization
-- Real-time typing synchronization
-- Real-time online/offline synchronization
-- Real-time message deletion
-- Real-time conversation preview updates
-- Automatic conversation reordering
-- No manual page refresh required for real-time events
-
-## 🗄️ Database & Backend
-
-- MongoDB database
-- Mongoose ODM
-- RESTful API architecture
-- Express.js backend
-- JWT authentication middleware
-- Password hashing
-- Protected resources
-- Message ownership validation
-- Conversation-based data management
-
-## 🔌 Socket.IO
-
-The application uses Socket.IO for:
-
-- `message:send`
-- `message:receive`
-- `message:delete`
-- `typing:start`
-- `typing:stop`
-- `user:online`
-- `user:offline`
-- `conversation:join`
-- `message:error`
-
-## 🔒 Security
-
-- JWT authentication
-- Password hashing
-- Protected Express routes
-- Authorization middleware
-- Socket.IO authentication
-- CORS configuration
-- Environment variables for sensitive configuration
-- Message ownership validation before deletion
-
----
-
-# 🛠️ Tech Stack
-
-## Frontend
-
-- React
-- React Router
-- Context API
-- Axios
-- Socket.IO Client
-- Bootstrap
-- Bootstrap Icons
-
-## Backend
-
-- Node.js
-- Express.js
-- MongoDB
-- Mongoose
-- Socket.IO
-- JWT
-- bcrypt
-- CORS
-- dotenv
-
----
-
-# 🏗️ Architecture
+## 🏗️ Architecture
 
 ```text
-                    ┌─────────────────────┐
-                    │      React App      │
-                    │      Frontend       │
-                    └──────────┬──────────┘
-                               │
-                    REST API + Socket.IO
-                               │
-                               ▼
-                    ┌─────────────────────┐
-                    │   Node.js + Express  │
-                    │      Backend         │
-                    └──────────┬──────────┘
-                               │
-                 ┌─────────────┴─────────────┐
-                 │                           │
-                 ▼                           ▼
-        ┌────────────────┐          ┌────────────────┐
-        │    Socket.IO   │          │   REST APIs    │
-        │ Real-time      │          │ Authentication │
-        │ communication  │          │ Conversations  │
-        └────────────────┘          │ Messages       │
-                                    └───────┬────────┘
-                                            │
-                                            ▼
-                                   ┌────────────────┐
-                                   │    MongoDB     │
-                                   │                │
-                                   │ Users          │
-                                   │ Conversations  │
-                                   │ Messages       │
-                                   └────────────────┘
-
-
----
-
-# 📂 Project Structure
-
-```text
-chat-application/
-│
-├── backend/
-│   │
-│   ├── src/
-│   │   ├── config/
-│   │   │   └── db.js
-│   │   │
-│   │   ├── controllers/
-│   │   │   ├── authController.js
-│   │   │   ├── conversationController.js
-│   │   │   ├── messageController.js
-│   │   │   └── userController.js
-│   │   │
-│   │   ├── middleware/
-│   │   │   └── authMiddleware.js
-│   │   │
-│   │   ├── models/
-│   │   │   ├── User.js
-│   │   │   ├── Conversation.js
-│   │   │   └── Message.js
-│   │   │
-│   │   ├── routes/
-│   │   │   ├── authRoutes.js
-│   │   │   ├── userRoutes.js
-│   │   │   ├── conversationRoutes.js
-│   │   │   └── messageRoutes.js
-│   │   │
-│   │   ├── socket/
-│   │   │   └── socketHandler.js
-│   │   │
-│   │   ├── app.js
-│   │   └── server.js
-│   │
-│   ├── .env
-│   ├── .gitignore
-│   └── package.json
-│
-├── frontend/
-│   │
-│   ├── src/
-│   │   ├── components/
-│   │   │   ├── chat/
-│   │   │   ├── conversation/
-│   │   │   └── user/
-│   │   │
-│   │   ├── context/
-│   │   │   ├── AuthContext.jsx
-│   │   │   └── ChatContext.jsx
-│   │   │
-│   │   ├── pages/
-│   │   │   ├── Chat.jsx
-│   │   │   ├── Login.jsx
-│   │   │   └── Register.jsx
-│   │   │
-│   │   ├── services/
-│   │   │   ├── api.js
-│   │   │   └── socket.js
-│   │   │
-│   │   ├── App.jsx
-│   │   └── main.jsx
-│   │
-│   ├── .env
-│   ├── .gitignore
-│   └── package.json
-│
-├── .gitignore
-└── README.md
+                    React Frontend
+                         |
+              +----------+----------+
+              |                     |
+            Axios              Socket.IO Client
+              |                     |
+              v                     v
+       Express REST API       Socket.IO Server
+              |                     |
+              +----------+----------+
+                         |
+                      MongoDB
+                         |
+             +-----------+-----------+
+             |           |           |
+           Users   Conversations  Messages
 ```
 
----
+The application intentionally combines REST and Socket.IO:
 
-# ⚙️ Installation
+- **REST** handles authentication, user search, conversation retrieval, and message-history pagination.
+- **Socket.IO** handles message delivery, typing, presence, conversation rooms, and message deletion.
 
-## 1. Clone the Repository
+## 🔐 Authentication Flow
 
-```bash
-git clone https://github.com/YOUR_USERNAME/chat-application.git
-cd chat-application
-```
+1. User registers or logs in through the Express API.
+2. Passwords are hashed/verified with bcrypt.
+3. The server issues a JWT valid for 7 days.
+4. React stores the token in localStorage.
+5. Axios uses the token for protected API requests.
+6. Socket.IO sends the same token during connection authentication.
+7. The backend verifies the token and associates the authenticated user with the socket.
 
----
-
-# 🔧 Backend Setup
-
-Navigate to the backend directory:
-
-```bash
-cd backend
-```
-
-Install dependencies:
-
-```bash
-npm install
-```
-
-Create a `.env` file inside the `backend` directory:
-
-```env
-PORT=5000
-
-MONGO_URI=your_mongodb_connection_string
-
-JWT_SECRET=your_jwt_secret
-
-CLIENT_URL=http://localhost:5173
-```
-
-Start the backend in development mode:
-
-```bash
-npm run dev
-```
-
-Or start normally:
-
-```bash
-npm start
-```
-
-The backend will run on:
-
-```text
-http://localhost:5000
-```
-
----
-
-# 🎨 Frontend Setup
-
-Open another terminal and navigate to the frontend:
-
-```bash
-cd frontend
-```
-
-Install dependencies:
-
-```bash
-npm install
-```
-
-If environment variables are used, create a `.env` file inside the `frontend` directory:
-
-```env
-VITE_API_URL=http://localhost:5000/api
-VITE_SOCKET_URL=http://localhost:5000
-```
-
-Start the frontend:
-
-```bash
-npm run dev
-```
-
-The frontend will normally run on:
-
-```text
-http://localhost:5173
-```
-
----
-
-# 🔑 Authentication
-
-The application uses **JWT authentication** for securing user accounts and API requests.
-
-## Authentication Flow
-
-```text
-User
- │
- ▼
-Login / Register
- │
- ▼
-Express API
- │
- ▼
-Validate User
- │
- ▼
-Generate JWT
- │
- ▼
-Frontend
- │
- ├── Store token in localStorage
- │
- ├── Attach token to API requests
- │
- └── Use token for Socket.IO authentication
-```
-
-API requests use:
-
-```http
-Authorization: Bearer <token>
-```
-
-Socket.IO also authenticates the connection using the JWT token.
-
----
-
-# 💬 Real-Time Messaging
-
-Messages are delivered using **Socket.IO**.
+## 💬 Real-Time Message Flow
 
 ```text
 Sender
-   │
-   │ message:send
-   ▼
+  |
+  | message:send
+  v
 Socket.IO Server
-   │
-   ├── Validate user
-   │
-   ├── Save message
-   │       │
-   │       ▼
-   │    MongoDB
-   │
-   └── message:receive
-          │
-          ├──────────────► Sender
-          │
-          └──────────────► Receiver
+  |
+  +--> validate conversation
+  +--> verify participant
+  +--> create Message
+  +--> update Conversation
+  |
+  v
+MongoDB
+  |
+  v
+conversation:<conversationId>
+  |
+  +--------> Sender
+  +--------> Receiver
+              |
+              v
+       message:receive
 ```
 
-Messages appear in the chat without requiring a page refresh.
+Conversation-specific rooms keep real-time events scoped to the relevant participants.
 
----
+## ✍️ Typing & Presence
 
-# 🏠 Conversation Rooms
-
-Each conversation uses a dedicated Socket.IO room.
-
-```text
-conversation:join
-        │
-        ▼
- conversationId
-        │
-        ▼
- Socket.IO Room
-        │
-        ├── Sender
-        │
-        └── Receiver
-```
-
-Only users belonging to the conversation can receive events for that conversation.
-
----
-
-# ✍️ Typing Indicator
-
-The application provides a real-time typing indicator.
-
-When a user starts typing:
+Typing is handled through transient Socket.IO events:
 
 ```text
 typing:start
-```
-
-When the user stops typing:
-
-```text
 typing:stop
 ```
 
-The other user sees:
+Presence is persisted on the user document:
 
 ```text
-Typing...
+user:online  -> isOnline = true
+user:offline -> isOnline = false + lastSeen
 ```
 
-The typing indicator is also displayed in the conversation sidebar.
+The React chat context updates users and conversation participants when these events arrive.
 
----
+## 🗑️ Message Deletion
 
-# 🟢 Online / Offline Presence
+Only the sender can delete a message.
 
-The application tracks user presence using Socket.IO.
+The backend:
 
-When a user connects:
+1. Finds the message.
+2. Verifies the authenticated socket user owns it.
+3. Deletes it from MongoDB.
+4. Finds the new latest message for the conversation.
+5. Updates the conversation preview.
+6. Emits the deletion event to the conversation room.
 
-```text
-user:online
-```
+## 🗃️ Data Models
 
-When the user disconnects:
-
-```text
-user:offline
-```
-
-The application updates:
-
-- Online status
-- Offline status
-- Last seen
-- Conversation participant status
-
-Example:
-
-```text
-Sunny Raj
-Online
-```
-
-or:
-
-```text
-Sunny Raj
-Offline
-```
-
----
-
-# 🗑️ Message Deletion
-
-Users can delete messages that they have sent.
-
-```text
-User
- │
- ▼
-Delete Message
- │
- ▼
-Socket.IO
- │
- ▼
-Backend
- │
- ├── Validate message
- │
- ├── Validate message ownership
- │
- ├── Delete from MongoDB
- │
- └── Broadcast deletion event
- │
- ▼
-message:delete
- │
- ├──────────────► Sender
- │
- └──────────────► Receiver
-```
-
-The deleted message is removed from:
-
-- MongoDB
-- Sender's chat
-- Receiver's chat
-- Conversation preview when applicable
-
----
-
-# 📋 Conversation Sidebar
-
-The sidebar displays:
-
-- Other user's name
-- Profile avatar
-- Last message
-- Last message time
-- Typing indicator
-- Conversation ordering
-
-When a new message arrives, the conversation is automatically moved to the top.
-
-Example:
-
-```text
-┌──────────────────────────────┐
-│ Rahul                 12:35  │
-│ Typing...                    │
-├──────────────────────────────┤
-│ Amit                  11:42  │
-│ Hello!                       │
-└──────────────────────────────┘
-```
-
----
-
-# 📧 Chat Header
-
-When a conversation is selected, the chat header displays the other user's:
-
-- Name
-- Email
-- Online/offline status
-
-Example:
-
-```text
-┌──────────────────────────────────────────┐
-│  R                                      │
-│  Rahul Kumar     rahul@example.com      │
-│  Online                                  │
-└──────────────────────────────────────────┘
-```
-
----
-
-# 🗃️ Database Models
-
-## User
+### User
 
 ```text
 User
@@ -637,22 +146,20 @@ User
 ├── profileImage
 ├── isOnline
 ├── lastSeen
-├── createdAt
-└── updatedAt
+└── timestamps
 ```
 
-## Conversation
+### Conversation
 
 ```text
 Conversation
 ├── participants[]
 ├── lastMessage
 ├── lastMessageAt
-├── createdAt
-└── updatedAt
+└── timestamps
 ```
 
-## Message
+### Message
 
 ```text
 Message
@@ -662,252 +169,181 @@ Message
 ├── status
 ├── deliveredAt
 ├── readAt
-├── createdAt
-└── updatedAt
+└── timestamps
 ```
 
----
-
-# 🔌 REST API
-
-## Authentication
-
-### Register
-
-```http
-POST /api/auth/register
-```
-
-### Login
-
-```http
-POST /api/auth/login
-```
-
----
-
-## Users
-
-### Get Users
-
-```http
-GET /api/users
-```
-
-### Search Users
-
-```http
-GET /api/users/search?q=<query>
-```
-
-### Get Current User
-
-```http
-GET /api/users/me
-```
-
----
-
-## Conversations
-
-### Get My Conversations
-
-```http
-GET /api/conversations
-```
-
-### Create / Get Conversation
-
-```http
-POST /api/conversations
-```
-
-Request body:
-
-```json
-{
-  "userId": "USER_ID"
-}
-```
-
----
-
-## Messages
-
-### Get Conversation Messages
-
-```http
-GET /api/messages/:conversationId
-```
-
-Real-time message sending is handled through Socket.IO.
-
----
-
-# 🔌 Socket.IO Events
-
-## Connection Events
+## 📂 Project Structure
 
 ```text
-connect
-disconnect
-connect_error
+ChatApp-Real-Time-Chat-Application/
+├── backend/
+│   └── src/
+│       ├── config/
+│       ├── controllers/
+│       ├── middleware/
+│       ├── models/
+│       ├── routes/
+│       ├── services/
+│       ├── socket/
+│       ├── app.js
+│       └── server.js
+├── frontend/
+│   └── src/
+│       ├── components/
+│       │   ├── chat/
+│       │   ├── conversation/
+│       │   └── user/
+│       ├── context/
+│       ├── pages/
+│       ├── services/
+│       ├── App.js
+│       └── index.js
+├── docs/
+│   └── case-study-real-time-chat.md
+└── README.md
 ```
 
-## Conversation Events
+## ⚙️ Local Setup
 
-```text
-conversation:join
+### Clone
+
+```bash
+git clone https://github.com/sunny-raj-sah/ChatApp-Real-Time-Chat-Application.git
+cd ChatApp-Real-Time-Chat-Application
 ```
 
-## Message Events
-
-```text
-message:send
-message:receive
-message:delete
-message:error
-```
-
-## Typing Events
-
-```text
-typing:start
-typing:stop
-```
-
-## Presence Events
-
-```text
-user:online
-user:offline
-```
-
----
-
-# 🔄 Real-Time Event Flow
-
-```text
-┌──────────────────────────────────────┐
-│          Socket.IO Events            │
-├──────────────────────────────────────┤
-│                                      │
-│  💬 message:send                     │
-│  💬 message:receive                  │
-│                                      │
-│  ✍️ typing:start                     │
-│  ✍️ typing:stop                      │
-│                                      │
-│  🟢 user:online                      │
-│  ⚫ user:offline                     │
-│                                      │
-│  🗑️ message:delete                   │
-│                                      │
-│  ✓ message status                    │
-│                                      │
-└──────────────────────────────────────┘
-```
-
----
-
-# 🔒 Security
-
-The application implements:
-
-- JWT authentication
-- Protected Express routes
-- Password hashing
-- Authorization middleware
-- Socket.IO authentication
-- CORS configuration
-- Environment variables for secrets
-- User ownership validation for message deletion
-
-> **Important:** Never commit your `.env` files or database credentials to GitHub.
-
----
-
-# 🧪 Development
-
-Start the backend:
+### Backend
 
 ```bash
 cd backend
+npm install
+```
+
+Create `backend/.env`:
+
+```env
+PORT=5000
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret
+CLIENT_URL=http://localhost:3000
+```
+
+Run:
+
+```bash
 npm run dev
 ```
 
-Start the frontend in another terminal:
+### Frontend
+
+In another terminal:
 
 ```bash
 cd frontend
-npm run dev
+npm install
 ```
 
-Open the application:
+Create `frontend/.env`:
+
+```env
+REACT_APP_API_URL=http://localhost:5000/api
+REACT_APP_SOCKET_URL=http://localhost:5000
+```
+
+Run:
+
+```bash
+npm start
+```
+
+Open:
 
 ```text
-http://localhost:5173
+http://localhost:3000
 ```
 
----
+## 🔌 REST API
 
-# 🛣️ Future Improvements
+| Method | Endpoint | Purpose |
+|---|---|---|
+| POST | `/api/auth/register` | Register |
+| POST | `/api/auth/login` | Login |
+| GET | `/api/users/me` | Current user |
+| GET | `/api/users` | List users |
+| GET | `/api/users/search?q=<query>` | Search users |
+| GET | `/api/users/:id` | Get user |
+| GET | `/api/conversations` | Get conversations |
+| POST | `/api/conversations` | Create/get conversation |
+| GET | `/api/messages/:conversationId` | Paginated message history |
+| POST | `/api/messages` | REST message endpoint |
 
-- 🧹 Clear chat
-- 🗑️ Delete conversation
-- ✏️ Edit messages
-- ✓✓ Read receipts
-- 📎 Image and file sharing
-- 🎤 Voice messages
-- ❤️ Message reactions
-- 👥 Group conversations
-- 🛡️ Group administration
-- 🔔 Push notifications
-- 📜 Message pagination
-- 🔢 Unread message count
-- 👤 User profile pictures
-- 🕐 Detailed last-seen information
-- 📱 Mobile application
-- 🚀 Production deployment
-- ⚡ Redis-based Socket.IO scaling
+The primary chat UI sends messages through Socket.IO.
 
----
+## 🔌 Socket Events
 
-# 📌 Project Highlights
+| Event | Direction | Purpose |
+|---|---|---|
+| `conversation:join` | Client → Server | Join authorized room |
+| `message:send` | Client → Server | Send message |
+| `message:receive` | Server → Client | Deliver message |
+| `message:delete` | Both | Delete/synchronize message |
+| `typing:start` | Both | Start typing indicator |
+| `typing:stop` | Both | Stop typing indicator |
+| `user:online` | Server → Client | Presence update |
+| `user:offline` | Server → Client | Presence update |
+| `message:error` | Server → Client | Socket error |
 
-This project demonstrates practical implementation of:
+## 🔒 Security
 
-- Full-stack JavaScript development
-- REST API development
-- JWT authentication
-- MongoDB data modeling
-- React Context API
-- Socket.IO real-time communication
-- WebSocket-based presence tracking
-- Real-time typing indicators
-- Real-time message synchronization
-- Real-time message deletion
-- Protected backend resources
-- Client-side state synchronization
+- bcrypt password hashing
+- JWT verification
+- Protected REST routes
+- Authenticated Socket.IO connections
+- Conversation membership checks
+- Message ownership checks
+- Password exclusion from populated user objects
+- Environment-based secrets
+- CORS configuration
 
----
+> The current frontend persists JWTs in localStorage. For stronger production session security, HTTP-only secure cookies can be evaluated with an appropriate CSRF strategy.
 
-# 👨‍💻 Author
+## 🚀 Deployment
+
+- **Frontend:** Vercel
+- **Backend + Socket.IO:** Render
+- **Database:** MongoDB
+
+## 📖 Engineering Case Study
+
+Detailed architecture and implementation documentation:
+
+**[Real-Time Chat Application Case Study](./docs/case-study-real-time-chat.md)**
+
+## 🛣️ Future Improvements
+
+- Group conversations
+- Message editing
+- Unread message counters
+- Attachments and image sharing
+- Message reactions
+- Conversation deletion
+- Push notifications
+- Richer read/delivery event handling
+- Redis Socket.IO adapter for horizontal scaling
+- Automated API/frontend/socket tests
+- Message virtualization for large histories
+
+## 🔗 Links
+
+- [Live Application](https://chat-app-real-time-chat-application-woad.vercel.app/login)
+- [GitHub Repository](https://github.com/sunny-raj-sah/ChatApp-Real-Time-Chat-Application)
+- [Sunny Raj Portfolio](https://portfolio-eight-vert-40.vercel.app/#projects)
+
+## 👨‍💻 Author
 
 **Sunny Raj**
 
 B.Tech Computer Science & Engineering
 
-### GitHub
-
-https://github.com/sunny-raj-sah
-
----
-
-# ⭐ Support
-
-If you find this project useful, consider giving it a ⭐ on GitHub.
-
----
-
-
+- GitHub: https://github.com/sunny-raj-sah
+- Portfolio: https://portfolio-eight-vert-40.vercel.app/
